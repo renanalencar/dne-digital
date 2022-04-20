@@ -8,10 +8,10 @@ import {
   Outfit_400Regular,
   Outfit_500Medium,
   Outfit_600SemiBold,
+  Outfit_700Bold,
   Outfit_900Black,
 } from '@expo-google-fonts/outfit';
 
-import { Background } from './src/components/Background';
 import { Routes } from './src/routes';
 import { theme } from './src/styles/theme';
 
@@ -20,6 +20,7 @@ const App: React.FC = () => {
     Outfit_400Regular,
     Outfit_500Medium,
     Outfit_600SemiBold,
+    Outfit_700Bold,
     Outfit_900Black,
   });
 

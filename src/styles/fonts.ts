@@ -9,6 +9,9 @@ export const fontConfig = {
     600: {
       normal: 'Outfit_600SemiBold',
     },
+    700: {
+      normal: 'Outfit_700Bold',
+    },
     900: {
       normal: 'Outfit_900Black',
     },

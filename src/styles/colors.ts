@@ -17,6 +17,7 @@ export const colors = {
       500: '#2E203C',
     },
     dne: {
+      400: '#0C9C55',
       500: '#0DA75B',
     },
   },
