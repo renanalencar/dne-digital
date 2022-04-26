@@ -12,6 +12,7 @@ import {
   Outfit_900Black,
 } from '@expo-google-fonts/outfit';
 
+import AppProvider from './src/hooks';
 import { Routes } from './src/routes';
 import { theme } from './src/styles/theme';
 
@@ -28,13 +29,15 @@ const App: React.FC = () => {
     <>
       <StatusBar style="light" />
       <NativeBaseProvider theme={theme}>
-        {fontsLoaded ? (
-          <Routes />
-        ) : (
-          <Box flex={1} justifyContent="center" alignItems="center">
-            <Spinner color="#FF6200" size="lg" />
-          </Box>
-        )}
+        <AppProvider>
+          {fontsLoaded ? (
+            <Routes />
+          ) : (
+            <Box flex={1} justifyContent="center" alignItems="center">
+              <Spinner color="#FF6200" size="lg" />
+            </Box>
+          )}
+        </AppProvider>
       </NativeBaseProvider>
     </>
   );

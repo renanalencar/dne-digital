@@ -27,6 +27,8 @@
     "eslint-plugin-import-helpers"
   ],
   "rules": {
+    "no-shadow": "off",
+    "react/jsx-no-constructed-context-values": "off",
     "react/require-default-props": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "react/function-component-definition": "off",

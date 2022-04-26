@@ -8,7 +8,10 @@ import dneImg from '../assets/dne.png';
 import ubesImg from '../assets/ubes.png';
 import uneImg from '../assets/une.png';
 import yearImg from '../assets/year.png';
-import { ValidateDocumentDTO, ValidateDocumentResponse } from '../services/api';
+import {
+  ValidateDocumentDTO,
+  ValidateDocumentResponse,
+} from '../hooks/document';
 import { Text } from './Text';
 
 type DocumentProps = {

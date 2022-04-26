@@ -11,7 +11,7 @@ import { CircleButton } from '../components/CircleButton';
 import { Container } from '../components/Container';
 import { Header } from '../components/Header';
 import { Scanner } from '../components/Scanner';
-import { ValidateDocumentDTO } from '../services/api';
+import { ValidateDocumentDTO } from '../hooks/document';
 
 export const Scan: React.FC = () => {
   const [hasPermission, setHasPermission] = useState<string | boolean>(false);
@@ -63,7 +63,7 @@ export const Scan: React.FC = () => {
         <Header
           title="Scan"
           subtitle={`Scaneie o QR Code presente no seu${'\n'}documento estudantil.`}
-          marginBottom="20px"
+          marginBottom="18px"
         />
         <Center flex={1}>
           <Scanner scanned={scanned} onScan={handleQRCodeScanned} />
