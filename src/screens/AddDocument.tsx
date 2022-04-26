@@ -44,6 +44,10 @@ export const AddDocument: React.FC<AddDocumentProps> = ({ route }) => {
   const { save, validate } = useDocument();
 
   const loadDocumentInfo = useCallback(async () => {
+    if (!params.codigoUso) {
+      return;
+    }
+
     try {
       const response = await validate(params);
 
@@ -71,6 +75,8 @@ export const AddDocument: React.FC<AddDocumentProps> = ({ route }) => {
 
   useEffect(() => {
     loadDocumentInfo();
+
+    return () => setParams({} as ValidateDocumentDTO);
   }, [loadDocumentInfo]);
 
   const handleAddDocument = useCallback(async () => {

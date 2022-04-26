@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 
-import { Box, FlatList, Icon, useToast } from 'native-base';
+import { FlatList, Icon, useToast } from 'native-base';
 
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -53,12 +53,9 @@ export const Home: React.FC = () => {
           <FlatList
             marginY="18px"
             data={documents}
+            keyExtractor={item => item.docParams.certificado}
             renderItem={({ item, index }) => (
-              <DocumentCard
-                key={item.reqParams.codigoUso}
-                data={item}
-                onPress={() => handleSelect(index)}
-              />
+              <DocumentCard data={item} onPress={() => handleSelect(index)} />
             )}
           />
         ) : (
