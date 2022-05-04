@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
-import { Icon, Center } from 'native-base';
-import { Platform } from 'react-native';
+import { Icon, Center, useToast } from 'native-base';
 
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -13,12 +12,14 @@ import { Container } from '../components/Container';
 import { Empty } from '../components/Empty';
 import { Header } from '../components/Header';
 import { Scanner } from '../components/Scanner';
+import { Toast } from '../components/Toast';
 import { ValidateDocumentDTO } from '../hooks/document';
 
 export const Scan: React.FC = () => {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(false);
   const navigation = useNavigation();
+  const toast = useToast();
 
   const requestCameraPermission = useCallback(async () => {
     const { granted } = await BarCodeScanner.requestPermissionsAsync();
@@ -32,13 +33,23 @@ export const Scan: React.FC = () => {
 
   const handleQRCodeScanned = useCallback(
     async ({ data }: BarCodeScannerResult) => {
+      const validDomains = ['dne.vc', 'meiaentrada.org.br'];
+
       setScanned(true);
 
       const paramsArray = String(data).split('/');
 
+      if (!validDomains.includes(paramsArray[2])) {
+        toast.show({
+          render: () => <Toast type="danger">QR Code inválido!</Toast>,
+        });
+
+        return;
+      }
+
       const params: ValidateDocumentDTO = {
-        codigoUso: paramsArray.at(-2) as string,
-        dataNascimento: paramsArray.at(-1) as string,
+        codigoUso: paramsArray[paramsArray.length - 2] as string,
+        dataNascimento: paramsArray[paramsArray.length - 1] as string,
       };
 
       navigation.navigate(
@@ -67,7 +78,7 @@ export const Scan: React.FC = () => {
           subtitle={`Scaneie o QR Code presente no seu${'\n'}documento estudantil.`}
           marginBottom="18px"
         />
-        {!hasPermission && Platform.OS === 'ios' && (
+        {!hasPermission && (
           <Empty
             message={`Você precisa conceder o acesso${'\n'}à câmera em suas configurações.`}
           />
