@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Document, ValidateDocumentDTO } from '../hooks/document';
+import { colors } from '../styles/colors';
 import { routes } from './routes';
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -22,7 +23,7 @@ export const Routes: React.FC = () => {
         screenOptions={{
           headerShown: false,
           contentStyle: {
-            backgroundColor: 'transparent',
+            backgroundColor: colors.brand.dark[500],
           },
         }}
       >

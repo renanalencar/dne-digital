@@ -37,6 +37,12 @@ export const DocumentDetails: React.FC<DocumentDetailsProps> = ({ route }) => {
   const handleDelete = useCallback(async () => {
     try {
       await remove(route.params.params.reqParams.codigoUso);
+
+      toast.show({
+        render: () => (
+          <Toast type="success">Documento removido com sucesso!</Toast>
+        ),
+      });
     } catch (error) {
       toast.show({
         render: () => <Toast type="danger">{String(error)}</Toast>,

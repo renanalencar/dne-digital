@@ -82,6 +82,12 @@ export const AddDocument: React.FC<AddDocumentProps> = ({ route }) => {
   const handleAddDocument = useCallback(async () => {
     try {
       await save(documentInfo);
+
+      toast.show({
+        render: () => (
+          <Toast type="success">Documento adicionado com sucesso!</Toast>
+        ),
+      });
     } catch (error) {
       toast.show({
         render: () => <Toast type="danger">{String(error)}</Toast>,
