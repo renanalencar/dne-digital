@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import * as NavigationBar from 'expo-navigation-bar';
 import { StatusBar } from 'expo-status-bar';
 import { NativeBaseProvider, Spinner, Box } from 'native-base';
+import { Platform } from 'react-native';
 
 import {
   useFonts,
@@ -14,6 +16,7 @@ import {
 
 import AppProvider from './src/hooks';
 import { Routes } from './src/routes';
+import { colors } from './src/styles/colors';
 import { theme } from './src/styles/theme';
 
 const App: React.FC = () => {
@@ -23,6 +26,13 @@ const App: React.FC = () => {
     Outfit_600SemiBold,
     Outfit_700Bold,
     Outfit_900Black,
+  });
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync(colors.brand.dark[500]);
+      NavigationBar.setButtonStyleAsync('light');
+    }
   });
 
   return (
