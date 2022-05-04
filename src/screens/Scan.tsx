@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { Icon, Center } from 'native-base';
+import { Platform } from 'react-native';
 
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -9,24 +10,25 @@ import { useNavigation } from '@react-navigation/native';
 import { Background } from '../components/Background';
 import { CircleButton } from '../components/CircleButton';
 import { Container } from '../components/Container';
+import { Empty } from '../components/Empty';
 import { Header } from '../components/Header';
 import { Scanner } from '../components/Scanner';
 import { ValidateDocumentDTO } from '../hooks/document';
 
 export const Scan: React.FC = () => {
-  const [hasPermission, setHasPermission] = useState<string | boolean>(false);
+  const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(false);
   const navigation = useNavigation();
 
   const requestCameraPermission = useCallback(async () => {
-    const { status } = await BarCodeScanner.requestPermissionsAsync();
+    const { granted } = await BarCodeScanner.requestPermissionsAsync();
 
-    setHasPermission(status === 'granted');
+    setHasPermission(granted);
   }, []);
 
   useEffect(() => {
     requestCameraPermission();
-  }, [requestCameraPermission, hasPermission, navigation]);
+  }, [requestCameraPermission]);
 
   const handleQRCodeScanned = useCallback(
     async ({ data }: BarCodeScannerResult) => {
@@ -65,26 +67,38 @@ export const Scan: React.FC = () => {
           subtitle={`Scaneie o QR Code presente no seu${'\n'}documento estudantil.`}
           marginBottom="18px"
         />
-        <Center flex={1}>
-          <Scanner scanned={scanned} onScan={handleQRCodeScanned} />
-          <CircleButton
-            marginTop="-24px"
-            marginBottom="20px"
-            isSecondary={!scanned}
-            onPress={handleAction}
-          >
-            {scanned ? (
-              <Icon
-                as={Feather}
-                name="plus"
-                color="brand.light.500"
-                size="24px"
-              />
-            ) : (
-              <Icon as={Feather} name="x" color="brand.light.500" size="24px" />
-            )}
-          </CircleButton>
-        </Center>
+        {!hasPermission && Platform.OS === 'ios' && (
+          <Empty
+            message={`Você precisa conceder o acesso${'\n'}à câmera em suas configurações.`}
+          />
+        )}
+        {hasPermission && (
+          <Center flex={1}>
+            <Scanner scanned={scanned} onScan={handleQRCodeScanned} />
+            <CircleButton
+              marginTop="-24px"
+              marginBottom="20px"
+              isSecondary={!scanned}
+              onPress={handleAction}
+            >
+              {scanned ? (
+                <Icon
+                  as={Feather}
+                  name="plus"
+                  color="brand.light.500"
+                  size="24px"
+                />
+              ) : (
+                <Icon
+                  as={Feather}
+                  name="x"
+                  color="brand.light.500"
+                  size="24px"
+                />
+              )}
+            </CircleButton>
+          </Center>
+        )}
       </Container>
     </Background>
   );
