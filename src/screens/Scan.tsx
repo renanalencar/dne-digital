@@ -59,7 +59,7 @@ export const Scan: React.FC = () => {
         } as never,
       );
     },
-    [navigation],
+    [navigation, toast],
   );
 
   const handleAction = useCallback(() => {
