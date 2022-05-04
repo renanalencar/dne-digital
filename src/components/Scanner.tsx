@@ -15,7 +15,6 @@ export const Scanner: React.FC<ScannerProps> = ({ scanned, onScan }) => {
       barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
       style={{
         width: '100%',
-        height: '50%',
         flex: 1,
       }}
     >

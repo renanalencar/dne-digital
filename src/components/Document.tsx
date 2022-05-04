@@ -12,6 +12,7 @@ import {
   ValidateDocumentDTO,
   ValidateDocumentResponse,
 } from '../hooks/document';
+import { formatDate } from '../utils/functions';
 import { Text } from './Text';
 
 type DocumentProps = {
@@ -82,6 +83,10 @@ export const Document: React.FC<DocumentProps> = ({ data }) => {
           <Box flexDir="row">
             <Text fontWeight={600}>{data.docParams.tipoDocumento}: </Text>
             <Text>{Number(data.docParams.documento)}</Text>
+          </Box>
+          <Box flexDir="row">
+            <Text fontWeight={600}>Nasc.: </Text>
+            <Text>{formatDate(data.reqParams.dataNascimento)}</Text>
           </Box>
           <Box flexDir="row">
             <Text fontWeight={600}>Inst.: </Text>
