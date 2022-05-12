@@ -5,12 +5,12 @@ import { Box } from 'native-base';
 import { Text } from './Text';
 
 type ToastProps = {
-  type?: 'success' | 'danger' | 'warning' | 'info';
+  type?: 'success' | 'error' | 'warning';
 };
 
 const colors = {
   success: 'success.700',
-  danger: 'danger.700',
+  error: 'danger.700',
   warning: 'amber.600',
   info: 'info.600',
 };

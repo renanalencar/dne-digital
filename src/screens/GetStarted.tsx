@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 
+import { MotiView } from 'moti';
 import { Box, Image } from 'native-base';
 
 import { useNavigation } from '@react-navigation/native';
@@ -20,11 +21,30 @@ export const GetStarted: React.FC = () => {
 
   return (
     <Background>
-      <Image
-        marginTop="48px"
-        source={heroImage}
-        alt="Ilustração de um Documento Nacional do Estudante"
-      />
+      <MotiView
+        from={{
+          translateX: -100,
+        }}
+        animate={{
+          translateX: 100,
+        }}
+        transition={{
+          loop: true,
+          type: 'timing',
+          duration: 5000,
+          delay: 100,
+        }}
+      >
+        <Image
+          marginX="auto"
+          marginTop="48px"
+          width={710 / 1.9}
+          height={426 / 1.9}
+          resizeMethod="resize"
+          source={heroImage}
+          alt="Ilustração de um Documento Nacional do Estudante"
+        />
+      </MotiView>
       <Container justifyContent="space-between" marginTop="32px">
         <Box>
           <Header title={`Seu documento estudantil${'\n'}todo digital.`} />

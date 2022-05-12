@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 
-import { FlatList, Icon, useToast } from 'native-base';
+import { NotificationFeedbackType } from 'expo-haptics';
+import { FlatList, Icon } from 'native-base';
 
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -11,23 +12,24 @@ import { Container } from '../components/Container';
 import { DocumentCard } from '../components/DocumentCard';
 import { Empty } from '../components/Empty';
 import { Header } from '../components/Header';
-import { Toast } from '../components/Toast';
 import { useDocument } from '../hooks/document';
+import { useNotification } from '../hooks/notification';
 
 export const Home: React.FC = () => {
   const navigation = useNavigation();
   const { load, documents } = useDocument();
-  const toast = useToast();
+  const { notification } = useNotification();
 
   useEffect(() => {
     try {
       load();
     } catch (error) {
-      toast.show({
-        render: () => <Toast type="danger">{String(error)}</Toast>,
+      notification({
+        type: NotificationFeedbackType.Error,
+        message: String(error),
       });
     }
-  }, [load, toast]);
+  }, [load, notification]);
 
   const handleAddDocument = useCallback(() => {
     navigation.navigate('Scan' as never);

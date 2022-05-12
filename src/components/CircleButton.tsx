@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 import { Button, IButtonProps } from 'native-base';
+import { GestureResponderEvent } from 'react-native';
 
 type CircleButtonProps = IButtonProps & {
   isSecondary?: boolean;
@@ -9,8 +11,19 @@ type CircleButtonProps = IButtonProps & {
 export const CircleButton: React.FC<CircleButtonProps> = ({
   children,
   isSecondary = false,
+  onPress,
   ...rest
 }) => {
+  const handlePressed = useCallback(
+    async (event: GestureResponderEvent) => {
+      await impactAsync(ImpactFeedbackStyle.Light);
+
+      if (onPress) {
+        onPress(event);
+      }
+    },
+    [onPress],
+  );
   return (
     <Button
       backgroundColor={
@@ -22,6 +35,7 @@ export const CircleButton: React.FC<CircleButtonProps> = ({
       _pressed={{
         background: isSecondary ? 'brand.secondary.400' : 'brand.primary.400',
       }}
+      onPress={handlePressed}
       {...rest}
     >
       {children}

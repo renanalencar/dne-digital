@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
-import { Icon, Center, useToast } from 'native-base';
+import { NotificationFeedbackType, notificationAsync } from 'expo-haptics';
+import { Icon, Center } from 'native-base';
 
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -12,14 +13,14 @@ import { Container } from '../components/Container';
 import { Empty } from '../components/Empty';
 import { Header } from '../components/Header';
 import { Scanner } from '../components/Scanner';
-import { Toast } from '../components/Toast';
 import { ValidateDocumentDTO } from '../hooks/document';
+import { useNotification } from '../hooks/notification';
 
 export const Scan: React.FC = () => {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(false);
   const navigation = useNavigation();
-  const toast = useToast();
+  const { notification } = useNotification();
 
   const requestCameraPermission = useCallback(async () => {
     const { granted } = await BarCodeScanner.requestPermissionsAsync();
@@ -40,8 +41,9 @@ export const Scan: React.FC = () => {
       const paramsArray = String(data).split('/');
 
       if (!validDomains.includes(paramsArray[2])) {
-        toast.show({
-          render: () => <Toast type="danger">QR Code inválido!</Toast>,
+        await notification({
+          type: NotificationFeedbackType.Error,
+          message: 'QR Code inválido!',
         });
 
         return;
@@ -52,6 +54,8 @@ export const Scan: React.FC = () => {
         dataNascimento: paramsArray[paramsArray.length - 1] as string,
       };
 
+      await notificationAsync(NotificationFeedbackType.Success);
+
       navigation.navigate(
         'AddDocument' as never,
         {
@@ -59,7 +63,7 @@ export const Scan: React.FC = () => {
         } as never,
       );
     },
-    [navigation, toast],
+    [navigation, notification],
   );
 
   const handleAction = useCallback(() => {

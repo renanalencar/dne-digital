@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box, useToast } from 'native-base';
+import { NotificationFeedbackType } from 'expo-haptics';
+import { Box } from 'native-base';
 
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -11,12 +12,12 @@ import { Container } from '../components/Container';
 import { Document } from '../components/Document';
 import { DocumentSkeleton } from '../components/DocumentSkeleton';
 import { Header } from '../components/Header';
-import { Toast } from '../components/Toast';
 import {
   useDocument,
   ValidateDocumentDTO,
   ValidateDocumentResponse,
 } from '../hooks/document';
+import { useNotification } from '../hooks/notification';
 import { RootStackParamsList } from '../routes';
 
 type AddDocumentProps = NativeStackScreenProps<
@@ -32,7 +33,7 @@ type DocumentDTO = {
 export const AddDocument: React.FC<AddDocumentProps> = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
-  const toast = useToast();
+  const { notification } = useNotification();
   const [params, setParams] = useState<ValidateDocumentDTO>(() => {
     const { params: routeParams } = route.params;
 
@@ -54,24 +55,25 @@ export const AddDocument: React.FC<AddDocumentProps> = ({ route }) => {
       if (response.status === 'false') {
         navigation.navigate('Home' as never);
 
-        toast.show({
-          render: () => <Toast type="danger">Erro: {response.mensagem}!</Toast>,
+        await notification({
+          type: NotificationFeedbackType.Error,
+          message: response.mensagem,
         });
+
         return;
       }
 
       setDocumentInfo({ docParams: response, reqParams: params });
       setIsLoading(false);
     } catch (error) {
-      navigation.navigate('Home' as never);
-
-      toast.show({
-        render: () => <Toast type="danger">Algo deu errado!</Toast>,
+      await notification({
+        type: NotificationFeedbackType.Error,
+        message: 'Algo deu errado!',
       });
 
       setIsLoading(false);
     }
-  }, [params, toast, navigation, validate]);
+  }, [params, notification, navigation, validate]);
 
   useEffect(() => {
     loadDocumentInfo();
@@ -83,19 +85,19 @@ export const AddDocument: React.FC<AddDocumentProps> = ({ route }) => {
     try {
       await save(documentInfo);
 
-      toast.show({
-        render: () => (
-          <Toast type="success">Documento adicionado com sucesso!</Toast>
-        ),
+      await notification({
+        type: NotificationFeedbackType.Success,
+        message: 'Documento adicionado com sucesso!',
       });
     } catch (error) {
-      toast.show({
-        render: () => <Toast type="danger">{String(error)}</Toast>,
+      await notification({
+        type: NotificationFeedbackType.Error,
+        message: 'String(error)',
       });
     } finally {
       navigation.navigate('Home' as never);
     }
-  }, [navigation, save, documentInfo, toast]);
+  }, [navigation, save, documentInfo, notification]);
 
   const handleCancel = useCallback(() => {
     setParams({} as ValidateDocumentDTO);

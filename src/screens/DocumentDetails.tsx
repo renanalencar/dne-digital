@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 
-import { Icon, useToast } from 'native-base';
+import { NotificationFeedbackType } from 'expo-haptics';
+import { Icon } from 'native-base';
 
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -12,8 +13,8 @@ import { CircleButton } from '../components/CircleButton';
 import { Container } from '../components/Container';
 import { Document } from '../components/Document';
 import { Header } from '../components/Header';
-import { Toast } from '../components/Toast';
 import { useDocument } from '../hooks/document';
+import { useNotification } from '../hooks/notification';
 import { RootStackParamsList } from '../routes';
 
 type DocumentDetailsProps = NativeStackScreenProps<
@@ -26,7 +27,7 @@ export const DocumentDetails: React.FC<DocumentDetailsProps> = ({ route }) => {
   const [isOpen, setIsOpen] = useState(false);
   const cancelRef = useRef(null);
   const { remove } = useDocument();
-  const toast = useToast();
+  const { notification } = useNotification();
 
   const onClose = useCallback(() => setIsOpen(false), []);
 
@@ -38,19 +39,19 @@ export const DocumentDetails: React.FC<DocumentDetailsProps> = ({ route }) => {
     try {
       await remove(route.params.params.reqParams.codigoUso);
 
-      toast.show({
-        render: () => (
-          <Toast type="success">Documento removido com sucesso!</Toast>
-        ),
+      await notification({
+        type: NotificationFeedbackType.Success,
+        message: 'Documento removido com sucesso!',
       });
     } catch (error) {
-      toast.show({
-        render: () => <Toast type="danger">{String(error)}</Toast>,
+      await notification({
+        type: NotificationFeedbackType.Error,
+        message: String(error),
       });
     } finally {
       navigation.navigate('Home' as never);
     }
-  }, [route, remove, toast, navigation]);
+  }, [route, remove, notification, navigation]);
 
   return (
     <>

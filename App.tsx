@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import 'react-native-reanimated';
 
 import * as NavigationBar from 'expo-navigation-bar';
 import { StatusBar } from 'expo-status-bar';
@@ -14,6 +15,7 @@ import {
   Outfit_900Black,
 } from '@expo-google-fonts/outfit';
 
+import { Background } from './src/components/Background';
 import AppProvider from './src/hooks';
 import { Routes } from './src/routes';
 import { colors } from './src/styles/colors';
@@ -43,9 +45,11 @@ const App: React.FC = () => {
           {fontsLoaded ? (
             <Routes />
           ) : (
-            <Box flex={1} justifyContent="center" alignItems="center">
-              <Spinner color="#FF6200" size="lg" />
-            </Box>
+            <Background>
+              <Box flex={1} justifyContent="center" alignItems="center">
+                <Spinner color="#FF6200" size="lg" />
+              </Box>
+            </Background>
           )}
         </AppProvider>
       </NativeBaseProvider>

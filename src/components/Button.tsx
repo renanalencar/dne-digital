@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 import { IButtonProps, Button as NativeButton } from 'native-base';
+import { GestureResponderEvent } from 'react-native';
 
 import { Text } from './Text';
 
@@ -26,8 +28,20 @@ const colors = {
 export const Button: React.FC<ButtonProps> = ({
   children,
   type = 'primary',
+  onPress,
   ...rest
 }) => {
+  const handlePressed = useCallback(
+    async (event: GestureResponderEvent) => {
+      await impactAsync(ImpactFeedbackStyle.Light);
+
+      if (onPress) {
+        onPress(event);
+      }
+    },
+    [onPress],
+  );
+
   return (
     <NativeButton
       bgColor={colors[type].background}
@@ -38,6 +52,7 @@ export const Button: React.FC<ButtonProps> = ({
       _pressed={{
         bgColor: colors[type].pressedBackground,
       }}
+      onPress={handlePressed}
       {...rest}
     >
       <Text color={colors[type].text} fontWeight={600} textAlign="center">
