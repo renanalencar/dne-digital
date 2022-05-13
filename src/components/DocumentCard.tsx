@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 import { Box, Image, IPressableProps, Pressable } from 'native-base';
 
 import yearImg from '../assets/year.png';
@@ -8,12 +9,19 @@ import { Text } from './Text';
 
 type DocumentCardProps = IPressableProps & {
   data: Document;
+  onPress(): void;
 };
 
 export const DocumentCard: React.FC<DocumentCardProps> = ({
   data,
+  onPress,
   ...rest
 }) => {
+  const handlePress = useCallback(async () => {
+    await impactAsync(ImpactFeedbackStyle.Light);
+    onPress();
+  }, [onPress]);
+
   return (
     <Pressable
       padding="8px"
@@ -26,6 +34,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
       _pressed={{
         background: 'brand.dne.300',
       }}
+      onPress={handlePress}
       {...rest}
     >
       <Image

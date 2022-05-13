@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 import { Box, Heading, IBoxProps, Icon, Pressable } from 'native-base';
 
 import { Feather } from '@expo/vector-icons';
@@ -18,6 +19,13 @@ export const Header: React.FC<HeaderProps> = ({
   hasGoback = undefined,
   ...rest
 }) => {
+  const handleGoBack = useCallback(async () => {
+    if (hasGoback) {
+      await impactAsync(ImpactFeedbackStyle.Light);
+      hasGoback();
+    }
+  }, [hasGoback]);
+
   return (
     <Box marginTop="32px" {...rest} flexDir="row" alignItems="flex-start">
       {hasGoback && (
@@ -26,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
           justifyContent="center"
           alignItems="center"
           marginLeft="-4px"
-          onPress={hasGoback}
+          onPress={handleGoBack}
         >
           <Icon
             as={Feather}

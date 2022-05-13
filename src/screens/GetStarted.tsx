@@ -23,15 +23,15 @@ export const GetStarted: React.FC = () => {
     <Background>
       <MotiView
         from={{
-          translateX: -100,
+          translateY: -15,
         }}
         animate={{
-          translateX: 100,
+          translateY: 15,
         }}
         transition={{
           loop: true,
           type: 'timing',
-          duration: 5000,
+          duration: 1500,
           delay: 100,
         }}
       >

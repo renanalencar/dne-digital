@@ -92,7 +92,7 @@ export const AddDocument: React.FC<AddDocumentProps> = ({ route }) => {
     } catch (error) {
       await notification({
         type: NotificationFeedbackType.Error,
-        message: 'String(error)',
+        message: String(error),
       });
     } finally {
       navigation.navigate('Home' as never);
