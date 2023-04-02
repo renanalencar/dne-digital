@@ -13,7 +13,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -21,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#2E203C"
-      }
+      },
+      "package": "br.dev.rca.dnedigital"
     },
     "androidStatusBar": {
       "backgroundColor": "#2E203C",
@@ -29,6 +32,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fc0fb7c2-f1c1-4aa6-87fa-56605f8653db"
+      }
     }
   }
 }
